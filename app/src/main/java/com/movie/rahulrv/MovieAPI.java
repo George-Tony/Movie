@@ -1,6 +1,6 @@
 package com.movie.rahulrv;
 
-import com.movie.rahulrv.model.Movie;
+import com.movie.rahulrv.model.MovieWrapper;
 
 import retrofit2.http.GET;
 import rx.Observable;
@@ -12,5 +12,5 @@ import rx.Observable;
 public interface MovieAPI {
 
     @GET("/3/movie/now_playing")
-    Observable<Movie> nowPlaying();
+    Observable<MovieWrapper> nowPlaying();
 }

@@ -22,6 +22,8 @@ android {
     defaultConfig {
         buildConfigField 'String', 'END_POINT', '"https://api.themoviedb.org/"'
         buildConfigField 'String', 'API_KEY', '"a07e22bc18f5cb106bfe4cc1f83ad8ed"'
+        buildConfigField 'String', 'IMAGE_BASE_URL', '"http://image.tmdb.org/t/p/"'
+
         applicationId "com.movie.rahulrv"
         minSdkVersion 19
         targetSdkVersion 24
@@ -56,6 +58,7 @@ dependencies {
     compile 'com.android.support:support-fragment:24.2.1'
     compile 'com.android.support:design:24.2.1'
     compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile 'com.android.support:cardview-v7:24.2.1'
 
     compile 'com.squareup.picasso:picasso:2.5.2'
 
@@ -63,6 +66,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+
+    compile 'io.reactivex:rxandroid:1.0.1'
 
     testCompile 'junit:junit:4.12'
 }

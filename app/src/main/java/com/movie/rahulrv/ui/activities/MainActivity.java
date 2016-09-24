@@ -1,13 +1,11 @@
 package com.movie.rahulrv.ui.activities;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-import com.movie.rahulrv.MovieAPI;
 import com.movie.rahulrv.R;
-import com.movie.rahulrv.RetrofitClient;
-
-import rx.schedulers.Schedulers;
+import com.movie.rahulrv.ui.fragments.NowPlayingFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,7 +13,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MovieAPI movieAPI = RetrofitClient.getInstance().create(MovieAPI.class);
-        movieAPI.nowPlaying().subscribeOn(Schedulers.computation()).subscribe();
+        switchFragment(new NowPlayingFragment());
+    }
+
+    public void switchFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.main_container, fragment).commit();
     }
 }
