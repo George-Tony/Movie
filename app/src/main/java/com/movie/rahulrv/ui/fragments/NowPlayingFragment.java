@@ -16,6 +16,7 @@ import com.movie.rahulrv.databinding.FragmentNowPlayingBinding;
 import com.movie.rahulrv.model.Movie;
 import com.movie.rahulrv.ui.adapters.NowPlayingAdapter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class NowPlayingFragment extends Fragment {
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         movieAPI = RetrofitClient.getInstance().create(MovieAPI.class);
+        setRetainInstance(true);
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater,
@@ -45,15 +47,32 @@ public class NowPlayingFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("data", new ArrayList<>(movies));
+    }
+
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.nowPlayingList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        movieAPI.nowPlaying()
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(movieWrapper -> {
-                    this.movies = movieWrapper.getResults();
-                    binding.nowPlayingList.setAdapter(new NowPlayingAdapter(movies));
-                });
+        if (movies.isEmpty()) {
+            movieAPI.nowPlaying()
+                    .subscribeOn(Schedulers.computation())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(movieWrapper -> {
+                        this.movies = movieWrapper.getResults();
+                        binding.nowPlayingList.setAdapter(new NowPlayingAdapter(movies));
+                    });
+        } else {
+            binding.nowPlayingList.setAdapter(new NowPlayingAdapter(movies));
+        }
+    }
+
+    public void setData(List<Movie> data) {
+        this.movies = data;
+    }
+
+    public List<Movie> getData() {
+        return movies;
     }
 }
