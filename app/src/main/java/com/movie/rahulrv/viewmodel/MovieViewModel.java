@@ -39,7 +39,9 @@ public class MovieViewModel {
                 .nowPlaying(page)
                 .map(MovieWrapper::getResults)
                 .doOnNext(movies1 -> {
-                    movies.onNext(movies1);
+                    List<Movie> fullList = new ArrayList<>(movies.getValue());
+                    fullList.addAll(movies1);
+                    movies.onNext(fullList);
                     page++;
                 })
                 .doOnTerminate(() -> isLoading.onNext(false));

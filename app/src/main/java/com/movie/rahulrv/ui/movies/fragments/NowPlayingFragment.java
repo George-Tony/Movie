@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +18,9 @@ import com.movie.rahulrv.ui.movies.adapters.NowPlayingAdapter;
 import com.movie.rahulrv.viewmodel.MovieViewModel;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
@@ -30,7 +32,7 @@ import rx.subscriptions.CompositeSubscription;
 public class NowPlayingFragment extends Fragment {
 
     private FragmentNowPlayingBinding binding;
-    private List<Movie> movies = Collections.emptyList();
+    private List<Movie> movies = new ArrayList<>();
     private CompositeSubscription subscription;
 
     private MovieViewModel viewModel;
@@ -42,6 +44,9 @@ public class NowPlayingFragment extends Fragment {
         setRetainInstance(true);
         subscription = new CompositeSubscription();
         viewModel = new MovieViewModel();
+        if(savedInstanceState != null) {
+            movies = savedInstanceState.getParcelableArrayList("data");
+        }
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater,
@@ -61,18 +66,54 @@ public class NowPlayingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         binding.nowPlayingList.setLayoutManager(linearLayoutManager);
+        adapter = new NowPlayingAdapter(movies);
+        binding.nowPlayingList.setAdapter(adapter);
+        initBindings();
         if (movies.isEmpty()) {
-            subscription.add(viewModel.loadMovies()
-                    .subscribeOn(Schedulers.computation())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(movies1 -> {
-                        this.movies = movies1;
-                        adapter = new NowPlayingAdapter(movies);
-                        binding.nowPlayingList.setAdapter(adapter);
-                    }));
+            loadMovies();
         } else {
-            binding.nowPlayingList.setAdapter(new NowPlayingAdapter(movies));
+            adapter.setItems(movies);
         }
+    }
+
+    private void initBindings() {
+        Observable<Void> infiniteScrollObservable = Observable.create(subscriber -> {
+            binding.nowPlayingList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    int totalItemCount = linearLayoutManager.getItemCount();
+                    int visibleItemCount = linearLayoutManager.getChildCount();
+                    int firstVisibleItem = linearLayoutManager.findFirstVisibleItemPosition();
+
+                    if ((visibleItemCount + firstVisibleItem) >= totalItemCount) {
+                        subscriber.onNext(null);
+                    }
+                }
+            });
+        });
+
+        // Bind list of posts to the RecyclerView
+        viewModel.getMovies()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe((items) -> {
+                    this.movies = items;
+                    adapter.setItems(movies);
+                });
+
+        viewModel.getIsLoading().observeOn(AndroidSchedulers.mainThread()).subscribe(aBoolean -> {
+            binding.progressBar.setVisibility(aBoolean ? View.VISIBLE: View.GONE);
+        });
+
+        // Trigger next page load when RecyclerView is scrolled to the bottom
+        infiniteScrollObservable.subscribe(x -> loadMovies());
+    }
+
+    private void loadMovies() {
+        subscription.add(viewModel.loadMovies()
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnError(throwable -> Log.d("now playing fragment", "load movies error"))
+                .subscribe());
     }
 
     @Override public void onDestroy() {

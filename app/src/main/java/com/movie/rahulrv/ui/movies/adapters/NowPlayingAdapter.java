@@ -9,6 +9,7 @@ import com.movie.rahulrv.R;
 import com.movie.rahulrv.databinding.ViewHolderNowPlayingBinding;
 import com.movie.rahulrv.model.Movie;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,9 +52,14 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.No
         }
     }
 
-    public void addData(List<Movie> moviesList) {
-        int oldPosition = movies.size();
-        this.addData(moviesList);
-        notifyItemInserted(oldPosition);
+    public void setItems(List<Movie> items)
+    {
+        if (items == null)
+        {
+            return;
+        }
+
+        this.movies = new ArrayList<>(items);
+        notifyDataSetChanged();
     }
 }
