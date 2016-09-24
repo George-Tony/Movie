@@ -1,4 +1,4 @@
-package com.movie.rahulrv.ui.adapters;
+package com.movie.rahulrv.ui.movies.adapters;
 
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
@@ -49,5 +49,11 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.No
             binding.setMovie(movie);
             binding.executePendingBindings();
         }
+    }
+
+    public void addData(List<Movie> moviesList) {
+        int oldPosition = movies.size();
+        this.addData(moviesList);
+        notifyItemInserted(oldPosition);
     }
 }

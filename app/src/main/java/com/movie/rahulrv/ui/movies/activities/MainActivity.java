@@ -1,4 +1,4 @@
-package com.movie.rahulrv.ui.activities;
+package com.movie.rahulrv.ui.movies.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.movie.rahulrv.R;
-import com.movie.rahulrv.ui.fragments.NowPlayingFragment;
+import com.movie.rahulrv.ui.movies.fragments.NowPlayingFragment;
 
 public class MainActivity extends AppCompatActivity {
 

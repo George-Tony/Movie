@@ -1,4 +1,4 @@
-package com.movie.rahulrv.ui.fragments;
+package com.movie.rahulrv.ui.movies.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -9,12 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.movie.rahulrv.MovieAPI;
 import com.movie.rahulrv.R;
-import com.movie.rahulrv.RetrofitClient;
 import com.movie.rahulrv.databinding.FragmentNowPlayingBinding;
 import com.movie.rahulrv.model.Movie;
-import com.movie.rahulrv.ui.adapters.NowPlayingAdapter;
+import com.movie.rahulrv.ui.movies.adapters.NowPlayingAdapter;
+import com.movie.rahulrv.viewmodel.MovieViewModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +21,7 @@ import java.util.List;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * Fragment displaying now playing movies.
@@ -31,12 +31,17 @@ public class NowPlayingFragment extends Fragment {
 
     private FragmentNowPlayingBinding binding;
     private List<Movie> movies = Collections.emptyList();
-    private MovieAPI movieAPI;
+    private CompositeSubscription subscription;
+
+    private MovieViewModel viewModel;
+    private LinearLayoutManager linearLayoutManager;
+    private NowPlayingAdapter adapter;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        movieAPI = RetrofitClient.getInstance().create(MovieAPI.class);
         setRetainInstance(true);
+        subscription = new CompositeSubscription();
+        viewModel = new MovieViewModel();
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater,
@@ -54,18 +59,25 @@ public class NowPlayingFragment extends Fragment {
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding.nowPlayingList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        binding.nowPlayingList.setLayoutManager(linearLayoutManager);
         if (movies.isEmpty()) {
-            movieAPI.nowPlaying()
+            subscription.add(viewModel.loadMovies()
                     .subscribeOn(Schedulers.computation())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(movieWrapper -> {
-                        this.movies = movieWrapper.getResults();
-                        binding.nowPlayingList.setAdapter(new NowPlayingAdapter(movies));
-                    });
+                    .subscribe(movies1 -> {
+                        this.movies = movies1;
+                        adapter = new NowPlayingAdapter(movies);
+                        binding.nowPlayingList.setAdapter(adapter);
+                    }));
         } else {
             binding.nowPlayingList.setAdapter(new NowPlayingAdapter(movies));
         }
+    }
+
+    @Override public void onDestroy() {
+        super.onDestroy();
+        subscription.clear();
     }
 
     public void setData(List<Movie> data) {
