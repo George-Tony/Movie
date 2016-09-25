@@ -34,7 +34,6 @@ public class NowPlayingFragment extends Fragment {
     private FragmentNowPlayingBinding binding;
     private List<Movie> movies = new ArrayList<>();
     private CompositeSubscription subscription;
-
     private MovieViewModel viewModel;
     private LinearLayoutManager linearLayoutManager;
     private NowPlayingAdapter adapter;
