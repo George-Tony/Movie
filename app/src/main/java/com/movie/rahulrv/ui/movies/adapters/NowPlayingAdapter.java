@@ -4,9 +4,11 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.movie.rahulrv.R;
+import com.movie.rahulrv.databinding.ViewHolderBackdropBinding;
 import com.movie.rahulrv.databinding.ViewHolderNowPlayingBinding;
 import com.movie.rahulrv.model.Movie;
 import com.movie.rahulrv.ui.movies.activities.MovieDetailActivity;
@@ -19,6 +21,8 @@ import java.util.List;
  */
 
 public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.NowPlayingViewHolder> {
+    private static final int OVERVIEW = 0;
+    private static final int BACKDROP = 1;
     private List<Movie> movies;
 
     public NowPlayingAdapter(List<Movie> movies) {
@@ -27,8 +31,13 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.No
 
     @Override
     public NowPlayingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        ViewHolderNowPlayingBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.view_holder_now_playing, parent, false);
-        return new NowPlayingViewHolder(binding);
+        if (viewType == OVERVIEW) {
+            ViewHolderNowPlayingBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.view_holder_now_playing, parent, false);
+            return new NowPlayingViewHolderOverview(binding);
+        } else {
+            ViewHolderBackdropBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.view_holder_backdrop, parent, false);
+            return new NowPlayingViewHolderBackdrop(binding);
+        }
     }
 
     @Override
@@ -40,14 +49,18 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.No
         });
     }
 
+    @Override public int getItemViewType(int position) {
+        return movies.get(position).getVoteAverage() <= 5.0f ? OVERVIEW : BACKDROP;
+    }
+
     @Override public int getItemCount() {
         return movies.size();
     }
 
-    public class NowPlayingViewHolder extends RecyclerView.ViewHolder {
+    public class NowPlayingViewHolderOverview extends NowPlayingViewHolder {
         ViewHolderNowPlayingBinding binding;
 
-        public NowPlayingViewHolder(ViewHolderNowPlayingBinding binding) {
+        public NowPlayingViewHolderOverview(ViewHolderNowPlayingBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
@@ -58,6 +71,21 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.No
         }
     }
 
+    public class NowPlayingViewHolderBackdrop extends NowPlayingViewHolder {
+        ViewHolderBackdropBinding binding;
+
+        public NowPlayingViewHolderBackdrop(ViewHolderBackdropBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
+        }
+
+        public void bindTo(Movie movie) {
+            binding.setMovie(movie);
+            binding.executePendingBindings();
+        }
+    }
+
+
     public void setItems(List<Movie> items) {
         if (items == null) {
             return;
@@ -66,4 +94,14 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.No
         this.movies = new ArrayList<>(items);
         notifyDataSetChanged();
     }
+
+    abstract class NowPlayingViewHolder extends RecyclerView.ViewHolder {
+
+        NowPlayingViewHolder(View view) {
+            super(view);
+        }
+
+        abstract void bindTo(Movie movie);
+    }
+
 }
