@@ -67,6 +67,7 @@ public class NowPlayingFragment extends Fragment {
         binding.nowPlayingList.setLayoutManager(linearLayoutManager);
         adapter = new NowPlayingAdapter(movies);
         binding.nowPlayingList.setAdapter(adapter);
+        binding.swipeRefreshLayout.setOnRefreshListener(this::loadMovies);
         initBindings();
         if (movies.isEmpty()) {
             loadMovies();
@@ -101,6 +102,7 @@ public class NowPlayingFragment extends Fragment {
 
         viewModel.getIsLoading().observeOn(AndroidSchedulers.mainThread()).subscribe(aBoolean -> {
             binding.progressBar.setVisibility(aBoolean ? View.VISIBLE: View.GONE);
+            binding.swipeRefreshLayout.setRefreshing(false);
         });
 
         // Trigger next page load when RecyclerView is scrolled to the bottom
