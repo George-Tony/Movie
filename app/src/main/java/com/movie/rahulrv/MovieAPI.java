@@ -1,6 +1,7 @@
 package com.movie.rahulrv;
 
 import com.movie.rahulrv.model.MovieWrapper;
+import com.movie.rahulrv.model.VideoWrapper;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
@@ -17,5 +18,5 @@ public interface MovieAPI {
     Observable<MovieWrapper> nowPlaying(@Query("page") int page);
 
     @GET("movie/{movieId}/videos")
-    Observable<MovieWrapper> getVideos(@Path("movieId") int movieId);
+    Observable<VideoWrapper> getVideos(@Path("movieId") int movieId);
 }

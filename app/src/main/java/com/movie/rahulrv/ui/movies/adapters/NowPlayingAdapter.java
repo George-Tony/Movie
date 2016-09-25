@@ -1,5 +1,6 @@
 package com.movie.rahulrv.ui.movies.adapters;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import com.movie.rahulrv.R;
 import com.movie.rahulrv.databinding.ViewHolderNowPlayingBinding;
 import com.movie.rahulrv.model.Movie;
+import com.movie.rahulrv.ui.movies.activities.MovieDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,10 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.No
     @Override
     public void onBindViewHolder(NowPlayingViewHolder holder, int position) {
         holder.bindTo(movies.get(position));
+        holder.itemView.setOnClickListener(v -> {
+            Context context = holder.itemView.getContext();
+            context.startActivity(MovieDetailActivity.newIntent(context, movies.get(position)));
+        });
     }
 
     @Override public int getItemCount() {
@@ -52,10 +58,8 @@ public class NowPlayingAdapter extends RecyclerView.Adapter<NowPlayingAdapter.No
         }
     }
 
-    public void setItems(List<Movie> items)
-    {
-        if (items == null)
-        {
+    public void setItems(List<Movie> items) {
+        if (items == null) {
             return;
         }
 
