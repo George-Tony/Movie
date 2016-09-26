@@ -10,9 +10,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.movie.rahulrv.MovieAPI;
-import com.movie.rahulrv.RetrofitClient;
+import com.movie.rahulrv.MyApplication;
 import com.movie.rahulrv.databinding.ActivityMovieDetailBinding;
 import com.movie.rahulrv.model.Movie;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -25,7 +27,8 @@ import rx.schedulers.Schedulers;
 public class MovieDetailActivity extends AppCompatActivity {
     private static final String ARG_MOVIE = "selectedMoview";
     private Movie movie;
-    private MovieAPI movieAPI;
+    @Inject
+    MovieAPI movieAPI;
 
     public static Intent newIntent(Context context, Movie movie) {
         Intent intent = new Intent(context, MovieDetailActivity.class);
@@ -35,7 +38,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MovieAPI movieAPI = RetrofitClient.getInstance().create(MovieAPI.class);
+        ((MyApplication)getApplication()).getComponent().inject(this);
         if (getIntent() != null) {
             Bundle bundle = getIntent().getExtras();
             movie = bundle.getParcelable(ARG_MOVIE);

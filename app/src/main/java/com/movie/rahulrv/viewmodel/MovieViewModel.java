@@ -1,12 +1,13 @@
 package com.movie.rahulrv.viewmodel;
 
 import com.movie.rahulrv.MovieAPI;
-import com.movie.rahulrv.RetrofitClient;
 import com.movie.rahulrv.model.Movie;
 import com.movie.rahulrv.model.MovieWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 import rx.subjects.BehaviorSubject;
@@ -20,12 +21,12 @@ public class MovieViewModel {
     private int page = 1;
     private BehaviorSubject<List<Movie>> movies = BehaviorSubject.create(new ArrayList<Movie>());
     private BehaviorSubject<Boolean> isLoading = BehaviorSubject.create(false);
+
     private MovieAPI movieAPI;
 
-    public MovieViewModel() {
-        // TODO use Dagger
-        movieAPI = RetrofitClient.getInstance()
-                .create(MovieAPI.class);
+    @Inject
+    public MovieViewModel(MovieAPI movieAPI) {
+        this.movieAPI = movieAPI;
     }
 
     public Observable<List<Movie>> loadMovies() {

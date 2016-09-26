@@ -11,10 +11,10 @@ import com.movie.rahulrv.databinding.ActivityMainBinding;
 import com.movie.rahulrv.ui.movies.fragments.NowPlayingFragment;
 
 public class MainActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.toolbar);
         FragmentManager fm = getSupportFragmentManager();

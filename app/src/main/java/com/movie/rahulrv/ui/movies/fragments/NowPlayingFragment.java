@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.movie.rahulrv.MyApplication;
 import com.movie.rahulrv.R;
 import com.movie.rahulrv.databinding.FragmentNowPlayingBinding;
 import com.movie.rahulrv.model.Movie;
@@ -19,6 +20,8 @@ import com.movie.rahulrv.viewmodel.MovieViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -34,15 +37,15 @@ public class NowPlayingFragment extends Fragment {
     private FragmentNowPlayingBinding binding;
     private List<Movie> movies = new ArrayList<>();
     private CompositeSubscription subscription;
-    private MovieViewModel viewModel;
+    @Inject MovieViewModel viewModel;
     private LinearLayoutManager linearLayoutManager;
     private NowPlayingAdapter adapter;
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        ((MyApplication) getActivity().getApplication()).getComponent().injectFragment(this);
         subscription = new CompositeSubscription();
-        viewModel = new MovieViewModel();
         if(savedInstanceState != null) {
             movies = savedInstanceState.getParcelableArrayList("data");
         }

@@ -13,18 +13,28 @@
         <RelativeLayout android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical">
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/title"
-                android:orientation="vertical"
-                app:backdrop="@{movie.backdropPath}"/>
+            <FrameLayout android:layout_width="match_parent"
+                         android:background="@color/colorPrimaryDark"
+                         android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:backdrop="@{movie.backdropPath}"/>
+                <ImageView
+                    android:id="@+id/play_overlay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_play_circle_filled_24dp"
+                    android:tint="@color/colorAccent"/>
+            </FrameLayout>
             <TextView
                 android:id="@+id/title"
                 style="@style/MovieTitle"
                 android:layout_height="48dp"
-                android:background="@color/colorPrimary"
                 android:layout_alignParentBottom="true"
+                android:background="@color/colorPrimary"
                 android:text="@{movie.title}"/>
         </RelativeLayout>
 
