@@ -56,6 +56,7 @@ public class NowPlayingFragment extends Fragment {
                                                  @Nullable Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater,
                 R.layout.fragment_now_playing, container, false);
+        binding.swipeRefreshLayout.setRefreshing(true);
         return binding.getRoot();
     }
 
