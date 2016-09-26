@@ -25,7 +25,7 @@ import rx.schedulers.Schedulers;
  */
 
 public class MovieDetailActivity extends AppCompatActivity {
-    private static final String ARG_MOVIE = "selectedMoview";
+    private static final String ARG_MOVIE = "selectedMovie";
     private Movie movie;
     @Inject
     MovieAPI movieAPI;

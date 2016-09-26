@@ -33,7 +33,7 @@ public class CustomBindingAdapter {
     }
 
     @BindingAdapter({"app:posterRounded"})
-    public static void loadBackdropImageRoundedCorder(ImageView view, String path) {
+    public static void loadBackdropImageRoundedCorner(ImageView view, String path) {
         String url = String.format("%s/%s/%s", BuildConfig.IMAGE_BASE_URL, "original", path);
         Picasso.with(view.getContext())
                 .load(url)
