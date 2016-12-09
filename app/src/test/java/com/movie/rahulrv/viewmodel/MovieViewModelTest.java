@@ -1,5 +1,7 @@
 package com.movie.rahulrv.viewmodel;
 
+import android.databinding.repacked.apache.commons.io.IOUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.movie.rahulrv.MovieAPI;
@@ -7,7 +9,6 @@ import com.movie.rahulrv.model.Movie;
 import com.movie.rahulrv.model.MovieWrapper;
 import com.movie.rahulrv.model.VideoWrapper;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

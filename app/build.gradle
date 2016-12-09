@@ -18,7 +18,7 @@ android {
         buildConfigField 'String', 'IMAGE_BASE_URL', '"http://image.tmdb.org/t/p/"'
 
         applicationId "com.movie.rahulrv"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 24
         versionCode 2
         versionName "1.0"

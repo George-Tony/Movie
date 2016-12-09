@@ -17,7 +17,7 @@ public class CustomBindingAdapter {
         String url = String.format("%s/%s/%s", BuildConfig.IMAGE_BASE_URL, "w342", path);
         Picasso.with(view.getContext())
                 .load(url)
-                .placeholder(R.drawable.ic_movie_24dp)
+                .placeholder(R.color.colorAccent)
                 .fit()
                 .into(view);
     }
