@@ -1,19 +1,18 @@
-package com.movie.rahulrv.ui.movies.fragments;
+package com.movie.rahulrv.ui.movies.activities;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.AttributeSet;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.movie.rahulrv.MyApplication;
 import com.movie.rahulrv.R;
-import com.movie.rahulrv.databinding.FragmentNowPlayingBinding;
+import com.movie.rahulrv.databinding.ActivityMainBinding;
 import com.movie.rahulrv.model.Movie;
 import com.movie.rahulrv.ui.movies.adapters.NowPlayingAdapter;
 import com.movie.rahulrv.viewmodel.MovieViewModel;
@@ -28,45 +27,39 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-/**
- * Fragment displaying now playing movies.
- */
-
-public class NowPlayingFragment extends Fragment {
+public class HomeActivity extends AppCompatActivity {
 
     @Inject MovieViewModel viewModel;
 
-    private FragmentNowPlayingBinding binding;
-    private List<Movie> movies = new ArrayList<>();
     private CompositeSubscription subscription;
+    private List<Movie> movies = new ArrayList<>();
+    private ActivityMainBinding binding;
     private StaggeredGridLayoutManager layoutManager;
     private NowPlayingAdapter adapter;
 
-    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-        ((MyApplication) getActivity().getApplication()).getComponent().injectFragment(this);
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        setActionBar(binding.toolbar);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(R.string.now_playing);
+        }
+
+        ((MyApplication) getApplication()).getComponent().injectFragment(this);
         subscription = new CompositeSubscription();
         if (savedInstanceState != null) {
             movies = savedInstanceState.getParcelableArrayList("data");
         }
     }
 
-    @Nullable @Override public View onCreateView(LayoutInflater inflater,
-                                                 @Nullable ViewGroup container,
-                                                 @Nullable Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater,
-                R.layout.fragment_now_playing, container, false);
-        return binding.getRoot();
+    @Override public View onCreateView(String name, Context context, AttributeSet attrs) {
+        return super.onCreateView(name, context, attrs);
     }
 
-    @Override public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("data", new ArrayList<>(movies));
-    }
-
-    @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    @Override protected void onStart() {
+        super.onStart();
         layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         binding.nowPlayingList.setLayoutManager(layoutManager);
         adapter = new NowPlayingAdapter(movies);

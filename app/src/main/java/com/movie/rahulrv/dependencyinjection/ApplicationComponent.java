@@ -1,8 +1,8 @@
 package com.movie.rahulrv.dependencyinjection;
 
 import com.movie.rahulrv.dependencyinjection.module.RetrofitClient;
+import com.movie.rahulrv.ui.movies.activities.HomeActivity;
 import com.movie.rahulrv.ui.movies.activities.MovieDetailActivity;
-import com.movie.rahulrv.ui.movies.fragments.NowPlayingFragment;
 
 import javax.inject.Singleton;
 
@@ -18,5 +18,5 @@ public interface ApplicationComponent {
 
     void inject(MovieDetailActivity activity);
 
-    void injectFragment(NowPlayingFragment fragment);
+    void injectFragment(HomeActivity activity);
 }

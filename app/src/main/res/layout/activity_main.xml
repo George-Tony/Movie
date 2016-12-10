@@ -1,28 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout>
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/activity_main"
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.movies.activities.MainActivity">
+        tools:context=".ui.movies.activities.HomeActivity">
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
-            <android.support.v7.widget.Toolbar
+            <Toolbar
                 android:id="@+id/toolbar"
                 app:layout_scrollFlags="scroll|enterAlways"
+                style="@style/Widget.MyApp.HomeToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"/>
+                android:layout_height="match_parent"
+                android:outlineProvider="none"
+                android:title="@string/app_name"/>
         </android.support.design.widget.AppBarLayout>
 
-        <FrameLayout
-            android:id="@+id/main_container"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/now_playing_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+        <ProgressBar
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="32dp"
+            android:layout_marginTop="32dp"
+            android:indeterminate="false"
+            android:indeterminateTint="@color/colorAccent"
+            android:indeterminateTintMode="src_in"/>
+
     </android.support.design.widget.CoordinatorLayout>
 </layout>
