@@ -47,7 +47,7 @@
                         android:visibility="gone"/>
                 </FrameLayout>
 
-                <android.support.v7.widget.Toolbar
+                <Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:text="@{movie.originalTitle}"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/white"
                     android:textSize="18sp"/>
 
                 <TextView
@@ -94,7 +94,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/white"
                     android:text="@{movie.releaseDate}"/>
 
                 <View
@@ -127,9 +127,10 @@
                     android:layout_below="@id/rating"
                     android:drawableEnd="@drawable/ic_group_black"
                     android:drawablePadding="8dp"
+                    android:drawableTint="@color/white"
                     android:gravity="center"
                     android:text="@{String.valueOf(movie.voteCount)}"
-                    android:textColor="@color/grey"/>
+                    android:textColor="@color/white"/>
 
                 <View
                     android:id="@+id/border"
@@ -146,7 +147,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/border"
                     android:text="@{movie.overview}"
-                    android:textColor="@color/grey"
+                    android:textColor="@color/white"
                     android:textSize="18sp"/>
 
             </RelativeLayout>

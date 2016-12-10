@@ -1,12 +1,12 @@
 package com.movie.rahulrv.ui.movies.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.movie.rahulrv.MovieAPI;
@@ -24,7 +24,7 @@ import rx.schedulers.Schedulers;
  * Activity for Movie Detail.
  */
 
-public class MovieDetailActivity extends AppCompatActivity {
+public class MovieDetailActivity extends Activity {
     private static final String ARG_MOVIE = "selectedMovie";
     private Movie movie;
     @Inject
@@ -48,10 +48,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         binding.setMovie(movie);
         binding.executePendingBindings();
-        setSupportActionBar(binding.toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setActionBar(binding.toolbar);
+        if (getActionBar() != null) {
+            getActionBar().setDisplayShowTitleEnabled(false);
+            getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         movieAPI.getVideos(movie.getId())
@@ -73,7 +73,5 @@ public class MovieDetailActivity extends AppCompatActivity {
                         });
                     }
                 }, Throwable::printStackTrace);
-
-
     }
 }
