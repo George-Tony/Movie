@@ -27,7 +27,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivityJava extends AppCompatActivity {
 
     @Inject MovieViewModel viewModel;
 

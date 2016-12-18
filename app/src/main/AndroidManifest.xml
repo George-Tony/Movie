@@ -9,7 +9,7 @@
         android:name=".MyApplication"
         android:supportsRtl="true"
         android:theme="@style/MoviesNow">
-        <activity android:name=".ui.movies.activities.HomeActivity"
+        <activity android:name=".ui.movies.activities.HomeActivityJava"
         android:theme="@style/MoviesNow.Home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.movies.activities.MovieDetailActivity"
-                  android:parentActivityName=".ui.movies.activities.HomeActivity"/>
+                  android:parentActivityName=".ui.movies.activities.HomeActivityJava"/>
 
     </application>
 
