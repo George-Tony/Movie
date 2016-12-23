@@ -1,101 +1,35 @@
 package com.movie.rahulrv.model;
 
-import com.google.gson.annotations.Expose;
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  *
  */
+@AutoValue
+public abstract class MovieWrapper {
 
-public class MovieWrapper {
     @SerializedName("page")
-    @Expose
-    private int page;
+    public abstract int page();
+
     @SerializedName("results")
-    @Expose
-    private List<Movie> results = new ArrayList<>();
+    public abstract List<Movie> results();
+
     @SerializedName("dates")
-    @Expose
-    private Dates dates;
+    public abstract Dates dates();
+
     @SerializedName("total_pages")
-    @Expose
-    private int totalPages;
+    abstract int totalPages();
+
     @SerializedName("total_results")
-    @Expose
-    private int totalResults;
+    abstract int totalResults();
 
-    /**
-     * @return The page
-     */
-    public int getPage() {
-        return page;
+    public static TypeAdapter<MovieWrapper> typeAdapter(Gson gson) {
+        return new AutoValue_MovieWrapper.GsonTypeAdapter(gson);
     }
-
-    /**
-     * @param page The page
-     */
-    public void setPage(int page) {
-        this.page = page;
-    }
-
-    /**
-     * @return The results
-     */
-    public List<Movie> getResults() {
-        return results;
-    }
-
-    /**
-     * @param results The results
-     */
-    public void setResults(List<Movie> results) {
-        this.results = results;
-    }
-
-    /**
-     * @return The dates
-     */
-    public Dates getDates() {
-        return dates;
-    }
-
-    /**
-     * @param dates The dates
-     */
-    public void setDates(Dates dates) {
-        this.dates = dates;
-    }
-
-    /**
-     * @return The totalPages
-     */
-    public int getTotalPages() {
-        return totalPages;
-    }
-
-    /**
-     * @param totalPages The total_pages
-     */
-    public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
-    }
-
-    /**
-     * @return The totalResults
-     */
-    public int getTotalResults() {
-        return totalResults;
-    }
-
-    /**
-     * @param totalResults The total_results
-     */
-    public void setTotalResults(int totalResults) {
-        this.totalResults = totalResults;
-    }
-
 }

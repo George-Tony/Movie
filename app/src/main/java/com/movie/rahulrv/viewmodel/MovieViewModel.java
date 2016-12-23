@@ -38,7 +38,7 @@ public class MovieViewModel {
 
         return movieAPI
                 .nowPlaying(page)
-                .map(MovieWrapper::getResults)
+                .map(MovieWrapper::results)
                 .doOnNext(movies1 -> {
                     List<Movie> fullList = new ArrayList<>(movies.getValue());
                     fullList.addAll(movies1);

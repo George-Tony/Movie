@@ -63,6 +63,15 @@ dependencies {
     annotationProcessor "org.androidannotations:androidannotations:4.0.0"
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:1.10.19'
+
+    provided 'com.google.auto.value:auto-value:1.2'
+    annotationProcessor 'com.google.auto.value:auto-value:1.2'
+
+    annotationProcessor 'com.ryanharter.auto.value:auto-value-gson:0.4.5'
+    provided 'com.ryanharter.auto.value:auto-value-gson:0.4.5'
+
+    annotationProcessor 'com.ryanharter.auto.value:auto-value-parcel:0.2.5'
+    compile 'com.ryanharter.auto.value:auto-value-parcel-adapter:0.2.5'
 }
 
 task findbugs(type: FindBugs) {

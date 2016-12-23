@@ -1,7 +1,9 @@
 package com.movie.rahulrv.dependencyinjection.module;
 
+import com.google.gson.GsonBuilder;
 import com.movie.rahulrv.BuildConfig;
 import com.movie.rahulrv.MovieAPI;
+import com.movie.rahulrv.model.AutoValueGsonFactory;
 
 import javax.inject.Singleton;
 
@@ -32,8 +34,16 @@ public class RetrofitClient {
             request = request.newBuilder().url(url).build();
             return chain.proceed(request);
         });
-        Retrofit retrofitClient = new Retrofit.Builder().baseUrl(BuildConfig.END_POINT).addConverterFactory(GsonConverterFactory.create())
-                .client(okHttpClient.build()).addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build();
+
+        GsonConverterFactory gsonConverterFactory = GsonConverterFactory.create(
+                new GsonBuilder().registerTypeAdapterFactory(AutoValueGsonFactory.create())
+                        .create());
+
+        Retrofit retrofitClient = new Retrofit.Builder()
+                .baseUrl(BuildConfig.END_POINT)
+                .addConverterFactory(gsonConverterFactory)
+                .client(okHttpClient.build())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create()).build();
 
         return retrofitClient.create(MovieAPI.class);
     }
