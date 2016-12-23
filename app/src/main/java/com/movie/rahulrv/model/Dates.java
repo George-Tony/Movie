@@ -1,36 +1,21 @@
 package com.movie.rahulrv.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 
 /**
  *
  *
  */
+@AutoValue
+public abstract class Dates {
 
-public class Dates {
+    abstract String maximum();
 
-    @SerializedName("maximum")
-    @Expose
-    private String maximum;
+    abstract String minimum();
 
-    @SerializedName("minimum")
-    @Expose
-    private String minimum;
-
-    public String getMaximum() {
-        return maximum;
-    }
-
-    public void setMaximum(String maximum) {
-        this.maximum = maximum;
-    }
-
-    public String getMinimum() {
-        return minimum;
-    }
-
-    public void setMinimum(String minimum) {
-        this.minimum = minimum;
+    public static TypeAdapter<Dates> typeAdapter(Gson gson) {
+        return new AutoValue_Dates.GsonTypeAdapter(gson);
     }
 }

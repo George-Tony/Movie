@@ -54,12 +54,12 @@ public class MovieDetailActivity extends Activity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        movieAPI.getVideos(movie.getId())
+        movieAPI.getVideos(movie.id())
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(videoWrapper -> {
-                    if (videoWrapper.getResults().size() > 0) {
-                        return Observable.from(videoWrapper.getResults());
+                    if (videoWrapper.results().size() > 0) {
+                        return Observable.from(videoWrapper.results());
                     } else {
                         return Observable.empty();
                     }
@@ -68,7 +68,7 @@ public class MovieDetailActivity extends Activity {
                     if (result != null) {
                         binding.playOverlay.setVisibility(View.VISIBLE);
                         binding.playOverlay.setOnClickListener(v -> {
-                            String url = "http://www.youtube.com/watch?v=" + result.getKey();
+                            String url = "http://www.youtube.com/watch?v=" + result.key();
                             startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
                         });
                     }

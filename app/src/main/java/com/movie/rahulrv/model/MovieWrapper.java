@@ -14,10 +14,8 @@ import java.util.List;
 @AutoValue
 public abstract class MovieWrapper {
 
-    @SerializedName("page")
     public abstract int page();
 
-    @SerializedName("results")
     public abstract List<Movie> results();
 
     @SerializedName("dates")

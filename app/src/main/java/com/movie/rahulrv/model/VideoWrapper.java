@@ -1,50 +1,23 @@
 package com.movie.rahulrv.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+import com.google.auto.value.AutoValue;
+import com.google.gson.Gson;
+import com.google.gson.TypeAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  *
  *
  */
+@AutoValue
+public abstract class VideoWrapper {
 
-public class VideoWrapper {
+    public abstract int id();
 
-    @SerializedName("id")
-    @Expose
-    private int id;
-    @SerializedName("results")
-    @Expose
-    private List<VideoInfo> results = new ArrayList<>();
+    public abstract List<VideoInfo> results();
 
-    /**
-     * @return The id
-     */
-    public int getId() {
-        return id;
-    }
-
-    /**
-     * @param id The id
-     */
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    /**
-     * @return The results
-     */
-    public List<VideoInfo> getResults() {
-        return results;
-    }
-
-    /**
-     * @param results The results
-     */
-    public void setResults(List<VideoInfo> results) {
-        this.results = results;
+    public static TypeAdapter<VideoWrapper> typeAdapter(Gson gson) {
+        return new AutoValue_VideoWrapper.GsonTypeAdapter(gson);
     }
 }
